@@ -4,13 +4,15 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Request, Response } from "express";
 import { Routes } from "./routes";
-
+import * as SwaggerUI from "swagger-ui-express";
+import * as fs from "fs";
+import * as docs from "../swagger.json";
 createConnection()
   .then(async connection => {
     // create express app
     const app = express();
     app.use(bodyParser.json());
-
+    app.use("/api-docs", SwaggerUI.serve, SwaggerUI.setup(docs));
     // register express routes from defined application routes
     Routes.forEach(route => {
       (app as any)[route.method](

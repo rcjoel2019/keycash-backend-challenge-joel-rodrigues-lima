@@ -1,0 +1,224 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Keycash Back End Challenge",
+    "description": "A Crud API REST of propertys",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local API for Testing"
+    }
+  ],
+  "paths": {
+    "/property": {
+      "post": {
+        "summary": "Property register",
+        "description":
+          "This route accepts a json body and registers a property",
+        "tags": ["Property"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Property"
+              },
+              "examples": {
+                "property": {
+                  "value": {
+                    "room": 3,
+                    "square_meters": 32,
+                    "next_to_subway": true,
+                    "parking_space": 2,
+                    "bathroom": 3,
+                    "floor": 2,
+                    "furnished": true,
+                    "iptu": "124.99",
+                    "address": "Rua Salvador Bueno, 49 - 08474-000",
+                    "condominium_fee": 499.99,
+                    "price": 379000,
+                    "phone": "+55 11 97042-9339",
+                    "email": "rcjoel2019@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "406": {
+            "description": "Property with a undefined field"
+          },
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Property"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all property",
+        "description": "Find and return every property on the database",
+        "tags": ["Property"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Property"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete a property",
+        "description": "Find and delete a property",
+        "tags": ["Property"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Property"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Could not find a property with this ID"
+          }
+        }
+      },
+      "put": {
+        "summary": "Property update",
+        "description":
+          "Find a property by id, then update it with the json body",
+        "tags": ["Property"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Property"
+              },
+              "examples": {
+                "property": {
+                  "value": {
+                    "condominium_fee": 799.99,
+                    "price": 179000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Could not find a property with this ID"
+          },
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Property"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Property": {
+        "type": "object",
+        "properties": {
+          "room": {
+            "type": "number"
+          },
+          "square_meters": {
+            "type": "number"
+          },
+          "next_to_subway": {
+            "type": "boolean"
+          },
+          "parking_space": {
+            "type": "number"
+          },
+          "bathroom": {
+            "type": "number"
+          },
+          "floor": {
+            "type": "number"
+          },
+          "furnished": {
+            "type": "boolean"
+          },
+          "iptu": {
+            "type": "number"
+          },
+          "address": {
+            "type": "string"
+          },
+          "condominium_fee": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
