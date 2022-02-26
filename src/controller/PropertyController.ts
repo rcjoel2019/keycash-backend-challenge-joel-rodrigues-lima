@@ -1,17 +1,56 @@
-import { getRepository } from "typeorm";
+import {
+  Between,
+  FindCondition,
+  getRepository,
+  LessThanOrEqual,
+  MoreThanOrEqual
+} from "typeorm";
 import { NextFunction, Request, Response } from "express";
 import { Property } from "../entity/Property";
-import { validate } from "class-validator";
 
 export class PropertyController {
   private propertyRepository = getRepository(Property);
+
+  public minMaxFilter(min, max, name) {
+    if (min != undefined || max != undefined) {
+      const obj = {};
+      obj[name] =
+        min != undefined && max == undefined
+          ? MoreThanOrEqual(parseInt(min.toString()))
+          : Between(
+              min == undefined ? 0 : parseInt(min.toString()),
+              parseInt(max.toString())
+            );
+      return obj;
+    }
+  }
 
   async index(
     request: Request,
     response: Response,
     next: NextFunction
   ): Promise<Property[]> {
-    return this.propertyRepository.find();
+    let filter: any = {};
+    filter = {
+      ...filter,
+      ...this.minMaxFilter(
+        request.query.minRoom,
+        request.query.maxRoom,
+        "room"
+      ),
+      ...this.minMaxFilter(
+        request.query.minMeter,
+        request.query.maxMeter,
+        "square_meters"
+      ),
+      ...this.minMaxFilter(
+        request.query.minPark,
+        request.query.maxPark,
+        "parking_space"
+      )
+    };
+
+    return this.propertyRepository.find(filter);
   }
   async show(
     request: Request,
@@ -31,9 +70,7 @@ export class PropertyController {
     next: NextFunction
   ): Promise<Property> {
     let p = new Property();
-
     p = { ...p, ...request.body };
-    console.log(p);
     const hasEmptyFields =
       Object.entries(p).filter(([k, v]) => v == undefined || v == null).length >
       0;
