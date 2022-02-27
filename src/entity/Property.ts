@@ -1,22 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import {
-  Contains,
-  IsInt,
-  Length,
-  IsEmail,
-  IsFQDN,
-  IsDate,
-  Min,
-  Max,
-  IsNumber
-} from "class-validator";
 
 @Entity()
 export class Property {
   @PrimaryGeneratedColumn() id: number;
 
-  @Column({ type: "int", nullable: true, default: 0 })
-  room: number = undefined;
+  @Column("int") room: number = undefined;
 
   @Column("int") square_meters: number = undefined;
 
@@ -36,9 +24,7 @@ export class Property {
 
   @Column("double") condominium_fee: number = undefined;
 
-  @Column("double")
-  @IsNumber()
-  price: number = undefined;
+  @Column("double") price: number = undefined;
 
   @Column() phone: string = undefined;
 
